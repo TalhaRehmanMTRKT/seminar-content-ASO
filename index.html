@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optimal Operation in Power Systems</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #004080;
+    }
+    .section {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
+    }
+    code, pre {
+      background-color: #eee;
+      padding: 0.5rem;
+      display: block;
+      overflow-x: auto;
+    }
+    .placeholder-img {
+      width: 100%;
+      height: 200px;
+      background: #ddd url('https://via.placeholder.com/600x200.png?text=Image+Placeholder') center/cover no-repeat;
+      margin: 1rem 0;
+    }
+    .contact-icons a {
+      margin: 0 10px;
+      font-size: 1.5rem;
+      color: #333;
+      text-decoration: none;
+    }
+    .contact-icons a:hover {
+      color: #0077b5;
+    }
+  </style>
+</head>
+<body>
+  <h1> Optimal Operation in Power Systems</h1>
+  <p><em>Presentation content for the course <strong>Advanced System Operation</strong> at Incheon National University, South Korea.<br>
+  <strong>Professor</strong>: [Professor Name Placeholder]</em></p>
+
+  <div class="section">
+    <h2> Introduction</h2>
+    <p>This project explores the core principles behind optimal operation in modern power systems. We focus on strategies to achieve cost-effective, reliable, and sustainable power generation and distribution.</p>
+  </div>
+
+  <div class="section">
+    <h2> Microgrids</h2>
+    <p>Microgrids are self-contained energy systems that operate independently or with the main grid. They include renewables, storage, and smart loads.</p>
+  </div>
+
+  <div class="section">
+    <h2> Optimal Operations (Economic Dispatch)</h2>
+    <p>Economic dispatch allocates load optimally across generators to minimize cost.</p>
+    <pre>min Σ Cᵢ(Pᵢ)  
+subject to: ΣPᵢ = D, Pᵢmin ≤ Pᵢ ≤ Pᵢmax</pre>
+  </div>
+
+  <div class="section">
+    <h2> Centralized Approach</h2>
+    <p>Centralized optimization uses complete system data for global decision making.</p>
+    <pre>min Σ (aᵢPᵢ² + bᵢPᵢ + cᵢ)  
+subject to: ΣPᵢ = D, Pᵢmin ≤ Pᵢ ≤ Pᵢmax</pre>
+    <div class="placeholder-img"></div>
+    <pre><code># Python code placeholder
+def centralized_dispatch(generators, demand):
+    # Optimization logic here
+    pass</code></pre>
+  </div>
+
+  <div class="section">
+    <h2> Optimal Power Flow (OPF)</h2>
+    <p>OPF determines the optimal operation levels considering power flow constraints.</p>
+    <pre>min f(Pg)  
+subject to: 
+g(x,u) = 0   (Power flow)
+h(x,u) ≤ 0   (Constraints)</pre>
+    <div class="placeholder-img"></div>
+    <pre><code># OPF code placeholder
+def solve_opf(network_data):
+    # Solve OPF
+    pass</code></pre>
+  </div>
+
+  <div class="section">
+    <h2> Conclusions</h2>
+    <p>This work presents a structured approach to economic dispatch and OPF in centralized and microgrid contexts.</p>
+  </div>
+
+  <div class="section contact-icons" style="text-align:center">
+    <h2> Connect With Me</h2>
+    <a href="" title="Email"><i class="fas fa-envelope"></i></a>
+    <a href="" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <a href="" title="GitHub"><i class="fab fa-github"></i></a>
+  </div>
+
+</body>
+</html>
