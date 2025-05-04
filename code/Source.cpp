@@ -33,8 +33,12 @@ main(int, char**)
     const int numLoads = 2;       // Number of loads
     const int numDGs = 2;         // Number of diesel generators
     const int numBuses = 4;       // Number of buses
+    const int numBESS = 1;        // Number of battery energy storage systems
+    const int numRES = 1;         // Number of renewable energy sources
 
-    const bool consider_opf = true; // Consider optimal power flow (OPF) or not
+    const double price_scale = 0.8; // Price scaling factor for selling power
+
+    const bool consider_opf = false; // Consider optimal power flow (OPF) or not
 
     const int theta_min = -360;   // Minimum angle (degrees)
     const int theta_max = 360;    // Maximum angle (degrees)
@@ -155,6 +159,20 @@ main(int, char**)
     // --------------------------------------------
     std::cout << std::fixed << std::setprecision(3);
     std::cout << "=== Microgrid Input Data ===\n\n";
+
+    // print system parameters
+    std::cout << " System Parameters:\n";
+    std::cout << "  Number of Buses   : " << numBuses << "\n";
+    // LINES 
+    std::cout << "  Number of Lines   : " << lines.size() << "\n";
+    std::cout << "  Number of Loads   : " << numLoads << "\n";
+    std::cout << "  Number of DGs     : " << numDGs << "\n";
+    std::cout << "  Number of BESS    : " << numBESS << "\n";
+    std::cout << "  Number of RES     : " << numRES << "\n";
+    std::cout << "  Time Horizon      : " << T << " hours\n";
+    std::cout << "  Big M             : " << M << "\n";
+    std::cout << "  Price Scale       : " << price_scale << "\n";
+    std::cout << "  Consider OPF      : " << (consider_opf ? "Yes" : "No") << "\n\n";
 
     // Bus parameters
     std::cout << " Bus Parameters:\n";
@@ -286,7 +304,7 @@ main(int, char**)
     IloExpr objective(env); //Defining the expression for the objective function
     for (int t = 0; t < T; t++)
     {
-        objective += c_buy[t] * p_buy[t] - 0.8 * c_buy[t] * p_sell[t] ; //Grid cost
+        objective += c_buy[t] * p_buy[t] - price_scale * c_buy[t] * p_sell[t] ; //Grid cost
         for (int i = 0; i < numDGs; ++i) {
 			objective += dgs[i].cost_per_mwh * p_dg[i][t]; //Diesel generator cost
 		}
@@ -409,6 +427,51 @@ main(int, char**)
     else {
         std::cerr << "Unable to open results.csv file.\n";
     }
+
+    if (consider_opf) {
+        // -- write powerflow.csv ---
+        std::ofstream pfFile("powerflow.csv");
+        pfFile << "Hour";
+        for (int i = 0; i < numBuses; ++i)
+            for (int j = 0; j < numBuses; ++j)
+                pfFile << ",P" << i + 1 << j + 1;
+        pfFile << "\n";
+
+        for (int t = 0; t < T; ++t) {
+            pfFile << t;
+            for (int i = 0; i < numBuses; ++i) {
+                for (int j = 0; j < numBuses; ++j) {
+                    double flow_ij = B[i][j] * (
+                        cplex.getValue(theta[i][t])
+                        - cplex.getValue(theta[j][t])
+                        );
+                    pfFile << "," << flow_ij;
+                }
+            }
+            pfFile << "\n";
+        }
+        pfFile.close();
+        std::cout << "Power-flow saved to powerflow.csv\n";
+
+        // --- write theta.csv ---
+        std::ofstream thFile("theta.csv");
+        thFile << "Hour";
+        for (int i = 0; i < numBuses; ++i)
+            thFile << ",Theta" << (i + 1);
+        thFile << "\n";
+
+        for (int t = 0; t < T; ++t) {
+            thFile << t;
+            for (int i = 0; i < numBuses; ++i) {
+                thFile << "," << cplex.getValue(theta[i][t]);
+            }
+            thFile << "\n";
+        }
+        thFile.close();
+        std::cout << "Angles saved to theta.csv\n";
+	}
+
+
 
 #pragma endregion
 
