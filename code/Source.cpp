@@ -8,7 +8,6 @@ ILOSTLBEGIN
 
 typedef IloArray<IloNumVarArray> NumVar2D;
 
-
 struct DieselGenerator {
     double cost_per_mwh;  // Cost ($/MWh)
     double p_min;         // Minimum capacity (MW)
@@ -31,7 +30,53 @@ main(int, char**)
     const int numDGs = 2;
 
     // --------------------------------------------------------------------
-    // 1) Grid Purchase Cost ($/MWh) for each hour
+    // 1) LINE PARAMETERS
+    // --------------------------------------------------------------------
+    const double x = 0.047; // reactance of the line 
+    const double r = 0.0922; // resistance of the line
+    const int numBuses = 4; // number of buses
+
+    // Define the connected lines (0-based indexing)
+    std::vector<std::pair<int, int>> lines = {
+        {0, 1},
+        {1, 2},
+        {2, 3},
+        {3, 0},
+        {0, 2}
+    };
+
+    // Create the susceptance and B matrices initialized to zero
+    std::vector<std::vector<double>> susceptance(numBuses, std::vector<double>(numBuses, 0.0));
+    std::vector<std::vector<double>> B(numBuses, std::vector<double>(numBuses, 0.0));
+
+    // Fill susceptance matrix only for existing lines
+    for (const auto& line : lines) {
+        int i = line.first;
+        int j = line.second;
+        double b_ij = -x / (r * r + x * x);
+        susceptance[i][j] = b_ij;
+        susceptance[j][i] = b_ij; // symmetric for undirected lines
+    }
+
+    // Build the B matrix
+    for (int i = 0; i < numBuses; ++i) {
+        for (int j = 0; j < numBuses; ++j) {
+            if (i != j) {
+                B[i][j] = susceptance[i][j]; // off-diagonal elements
+            }
+            else {
+                double sum = 0.0;
+                for (int k = 0; k < numBuses; ++k) {
+                    if (k != i) sum -= susceptance[i][k];
+                }
+                B[i][j] = sum; // diagonal is negative sum of off-diagonal terms
+            }
+        }
+    }
+
+
+    // --------------------------------------------------------------------
+    // 2) Grid Purchase Cost ($/MWh) for each hour
     // --------------------------------------------------------------------
     std::vector<double> c_buy = {
         90, 90, 90, 90, 90, 90,
@@ -41,7 +86,7 @@ main(int, char**)
     };
 
     // --------------------------------------------------------------------
-    // 2) Load Demand (MW) for each load and each hour
+    // 3) Load Demand (MW) for each load and each hour
     // --------------------------------------------------------------------
     std::vector<std::vector<double>> p_load(numLoads, std::vector<double>{
         169, 175, 179, 171, 181, 172,
@@ -51,7 +96,7 @@ main(int, char**)
     });
 
     // --------------------------------------------------------------------
-    // 3) Renewable Generation Forecast (MW) each hour
+    // 4) Renewable Generation Forecast (MW) each hour
     // --------------------------------------------------------------------
     std::vector<double> p_res = {
         16, 17, 17, 100, 181, 172,
@@ -61,7 +106,7 @@ main(int, char**)
     };
 
     // --------------------------------------------------------------------
-    // 4) Battery Energy Storage System (BESS) Parameters
+    // 5) Battery Energy Storage System (BESS) Parameters
     // --------------------------------------------------------------------
     const double p_bess_max = 200.0;    // Max charge/discharge (MW)
     const double eta = 0.95;            // Round-trip efficiency (0–1)
@@ -69,7 +114,7 @@ main(int, char**)
     const double soc_max = 0.90;        // Maximum state of charge
 
     // --------------------------------------------------------------------
-    // 5) Diesel Generator (DG) Parameters - Two Generators
+    // 6) Diesel Generator (DG) Parameters - Two Generators
     // --------------------------------------------------------------------
     std::vector<DieselGenerator> dgs = {
         {80.0, 50.0, 200.0},   // DG1 cost , min, max
@@ -79,12 +124,43 @@ main(int, char**)
     // --------------------------------------------------------------------
     // Print Summary of All Inputs
     // --------------------------------------------------------------------
-    std::cout << std::fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(3);
     std::cout << "=== Microgrid Input Data ===\n\n";
 
+    // 0) Line Parameters and Network Topology
+    std::cout << "0) Line Parameters:\n";
+    std::cout << "  Reactance (x)     : " << x << " ohm\n";
+    std::cout << "  Resistance (r)    : " << r << " ohm\n";
+    std::cout << "  Connected Lines   :\n";
+    for (const auto& line : lines) {
+        std::cout << "    Bus " << line.first + 1 << " <--> Bus " << line.second + 1 << "\n";
+    }
+    std::cout << "\n";
+
+    // Print Susceptance Matrix
+    std::cout << "  Susceptance Matrix (p.u.):\n";
+    for (int i = 0; i < numBuses; ++i) {
+        for (int j = 0; j < numBuses; ++j) {
+            std::cout << std::setw(10) << susceptance[i][j];
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+
+    // Print B Matrix
+    std::cout << "  B Matrix (DC Power Flow Susceptance Matrix):\n";
+    for (int i = 0; i < numBuses; ++i) {
+        for (int j = 0; j < numBuses; ++j) {
+            std::cout << std::setw(10) << B[i][j];
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+
+    std::cout << std::fixed << std::setprecision(1);
     // 1) Grid Purchase Cost
     std::cout << "1) Grid Purchase Cost ($/MWh):\n  Hour :";
-    for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t;
+    for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t+1;
     std::cout << "\n  Cost :";
     for (double v : c_buy) std::cout << std::setw(6) << v;
     std::cout << "\n\n";
@@ -92,7 +168,7 @@ main(int, char**)
     // 2) Load Demand Profiles
     for (int i = 0; i < numLoads; ++i) {
         std::cout << "2." << (i + 1) << ") Load " << (i + 1) << " Demand (MW):\n  Hour :";
-        for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t;
+        for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t+1;
         std::cout << "\n  Demand:";
         for (double v : p_load[i]) std::cout << std::setw(6) << v;
         std::cout << "\n\n";
@@ -100,7 +176,7 @@ main(int, char**)
 
     // 3) Renewable Generation
     std::cout << "3) Renewable Generation Forecast (MW):\n  Hour :";
-    for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t;
+    for (int t = 0; t < T; ++t) std::cout << std::setw(6) << t+1;
     std::cout << "\n  Gen   :";
     for (double v : p_res) std::cout << std::setw(6) << v;
     std::cout << "\n\n";
@@ -192,7 +268,7 @@ main(int, char**)
 
     IloCplex cplex(env);
 	cplex.extract(model);
-	//cplex.setOut(env.getNullStream());
+	cplex.setOut(env.getNullStream());
     if (!cplex.solve()) {
 		env.error() << "Failed" << endl;
 		throw(-1);
