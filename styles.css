@@ -149,17 +149,18 @@ footer a:hover {
   }
 }
 #powerflowHeatmapContainer {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-  user-select: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: #fdfdfd;
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
 }
 
 #powerFlowHeatmap {
-  width: 100% !important; /* make canvas responsive */
-  height: auto !important;
   max-height: 400px;
   display: block;
   margin: 0 auto;
+  background-color: #fafafa;
+  border-radius: 8px;
+  border: 2px solid #333;
 }

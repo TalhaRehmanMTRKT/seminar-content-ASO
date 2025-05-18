@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   let heatmapChart;
-
   function plotHeatmap(hourIndex) {
     const row = heatmapData[hourIndex];
     const matrix = [];
@@ -136,12 +135,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataset = {
       label: 'Power Flow',
       data: matrix,
+      borderColor: 'black', // Thick black borders
+      borderWidth: 1.5,
       backgroundColor(context) {
         const v = context.dataset.data[context.dataIndex].v;
         const alpha = Math.min(1, Math.abs(v) / 70);
         return v >= 0
-          ? `rgba(0, 128, 0, ${alpha})` // greenish
-          : `rgba(220, 20, 60, ${alpha})`; // reddish
+          ? `rgba(0, 200, 0, ${alpha})` // strong green
+          : `rgba(200, 0, 0, ${alpha})`; // strong red
       },
       width: ({ chart }) => (chart.chartArea || {}).width / 4 - 1,
       height: ({ chart }) => (chart.chartArea || {}).height / 4 - 1
@@ -152,10 +153,16 @@ document.addEventListener("DOMContentLoaded", () => {
       data: { datasets: [dataset] },
       options: {
         maintainAspectRatio: true,
-        aspectRatio: 1,  // keep square
+        aspectRatio: 1,
         responsive: true,
+        layout: {
+          padding: 10
+        },
         plugins: {
           tooltip: {
+            backgroundColor: '#222',
+            titleColor: '#fff',
+            bodyColor: '#ddd',
             callbacks: {
               title: ctx => {
                 const x = ctx[0].raw.x;
@@ -168,7 +175,15 @@ document.addEventListener("DOMContentLoaded", () => {
           title: {
             display: true,
             text: `Power Flow Heatmap (Hour ${heatmapData[hourIndex].Hour})`,
-            font: { size: 16, weight: 'bold' }
+            color: '#111',
+            font: {
+              size: 18,
+              weight: 'bold'
+            },
+            padding: {
+              top: 10,
+              bottom: 10
+            }
           },
           legend: { display: false }
         },
@@ -176,33 +191,41 @@ document.addEventListener("DOMContentLoaded", () => {
           x: {
             type: 'linear',
             position: 'top',
+            min: -0.5,
+            max: 3.5,
             ticks: {
-              callback: (v) => busLabels[v],
-              max: 3,
               stepSize: 1,
-              font: { size: 12 }
+              callback: (v) => busLabels[v],
+              color: '#111',
+              font: { size: 13, weight: '600' }
             },
-            grid: { display: false }
+            grid: {
+              display: false
+            }
           },
           y: {
             type: 'linear',
             reverse: true,
+            min: -0.5,
+            max: 3.5,
             ticks: {
-              callback: (v) => busLabels[v],
-              max: 3,
               stepSize: 1,
-              font: { size: 12 }
+              callback: (v) => busLabels[v],
+              color: '#111',
+              font: { size: 13, weight: '600' }
             },
-            grid: { display: false }
+            grid: {
+              display: false
+            }
           }
         }
       }
     };
 
-
     if (heatmapChart) heatmapChart.destroy();
     heatmapChart = new Chart(canvas, config);
   }
+
 
   // Tab switching logic
   document.querySelectorAll(".tab-btn").forEach(button => {
