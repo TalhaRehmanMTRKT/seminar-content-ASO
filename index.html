@@ -60,7 +60,6 @@
   <h1>Optimal Operation in Power Systems</h1>
   <p><strong>Author:</strong> Talha Rehman @Incheon National University<br>
     <strong>Course:</strong> Advanced System Operation<br>
-    <strong>Website:</strong> <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
   </p>
 
   <div class="section">
@@ -128,9 +127,32 @@
     </ul>
   </div>
 
-<!-- 
-      <h3>Mathematical Formulation</h3>
-    <img src="images/model_equations.JPG" alt="Mathematical Model - Objective and Constraints" class="model"> -->
+  <div class="section">
+    <h2>Economic Dispatch (Optimal Operations)</h2>
+    <p>Economic dispatch refers to determining the operational schedules of dispatchable generators, energy storage
+      systems, and external grid exchanges so that the total operational cost of the system is minimized, subject to all
+      operational and limit constraints.</p>
+    <h3>Consider the below system as an example</h3>
+    <div class="image-placeholder">
+      <img src="images/test_system.png" alt="Test System" style="max-width: 100%; height: auto;">
+    </div>
+    <p>The above system has 5lines, 4buses, 2DGs, 2Load, 1BESS, 1RES, and an external grid connection.</p>
+
+    <h3>Centralized Approach</h3>
+    <p>To determine the operational schedule of the system we solve the optimization model. The centralized approach
+      assumes that there is a central controller (energy management system EMS) that performs optimization.
+    </p>
+    <div class="image-placeholder">
+      <img src="images/centralized_image.png" alt="Centralized Approach" style="max-width: 100%; height: auto;">
+    </div>
+
+    <h3>Mathematical Model</h3>
+    <p>The objective of microgrid is to minimize the cost while maintaining supply and demand balance. The optimization
+      model is as follows:</p>
+    <div class="image-placeholder">
+      <img src="images/model_equations.JPG" alt="Centralized Model Equations" style="max-width: 100%; height: auto;">
+    </div>
+  </div>
 
   <div class="section">
     <h2>Code Implementation</h2>
