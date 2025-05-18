@@ -1,40 +1,44 @@
-// Load CSV file and initialize DataTable
-$(document).ready(function () {
-  const csvFilePath = "code/results.csv";
+document.addEventListener("DOMContentLoaded", () => {
+  const csvFilePath = 'code/results.csv'; // adjust this path as needed
 
-  $.ajax({
-    url: csvFilePath,
-    dataType: "text",
-  })
-    .done(function (data) {
-      // Parse CSV
-      const parsed = Papa.parse(data, { header: true });
+  fetch(csvFilePath)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(csvText => {
+      const parsed = Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+        dynamicTyping: true
+      });
+
       if (parsed.errors.length) {
         console.error("CSV parsing errors:", parsed.errors);
+        document.getElementById('csvTable').innerHTML =
+          '<tr><td colspan="10">Error parsing CSV file.</td></tr>';
         return;
       }
 
-      // Prepare columns for DataTables
-      const columns = Object.keys(parsed.data[0]).map((key) => ({
-        title: key,
-        data: key,
+      const data = parsed.data;
+      const columns = parsed.meta.fields.map(field => ({
+        title: field,
+        data: field
       }));
 
-      // Initialize DataTable
-      $("#csvTable").DataTable({
-        data: parsed.data,
+      $('#csvTable').DataTable({
+        data: data,
         columns: columns,
-        paging: true,
-        searching: false,
-        info: false,
-        lengthChange: false,
         pageLength: 10,
-        order: [[0, "asc"]],
+        lengthMenu: [5, 10, 25, 50],
+        responsive: true
       });
     })
-    .fail(function () {
-      $("#csvTable").html(
-        "<tr><td colspan='10'>Failed to load CSV results.</td></tr>"
-      );
+    .catch(error => {
+      console.error('Error loading CSV:', error);
+      document.getElementById('csvTable').innerHTML =
+        '<tr><td colspan="10">Failed to load CSV file.</td></tr>';
     });
 });
