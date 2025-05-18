@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Optimal Operation in Power Systems - Talha Rehman</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -88,7 +90,7 @@
     <p>Microgrids are the small scale power grid, that has there own distributed generation resources and demand. It can
       be connected to the external grid while it can also operate in the islanded mode.</p>
     <div class="image-placeholder">
-      <img src="images/microgird.png" alt="Microgrid diagram or concept" style="max-width: 100%; height: auto;">
+      <img src="images/microgird.png" alt="Microgrid diagram or concept" style="max-width: 70%; height: auto;">
     </div>
   </div>
 
@@ -97,33 +99,33 @@
     <p>The microgrid optimization problem is formulated as a Mixed Integer Linear Programming (MILP) problem with the
       following components:</p>
     <ul>
-      <<li>
+      <li>
         <strong>Objective Function:</strong><br>
         Minimize:<br>
         &nbsp;&nbsp;&nbsp;e.g. cost, load shedding.<br>
         Maximize:<br>
         &nbsp;&nbsp;&nbsp;e.g. profit.
-        </li>
+      </li>
 
-        <li>
-          <strong>Decision Variables:</strong><br>
-          Continuous:<br>
-          &nbsp;&nbsp;&nbsp;e.g. generator power, load-shedding amount.<br>
-          Binary:<br>
-          &nbsp;&nbsp;&nbsp;e.g. on/off status of line or battery charging/discharging status.<br>
-          Discrete integers:<br>
-          &nbsp;&nbsp;&nbsp;e.g. number of generators to install.
-        </li>
-        <li>
-          <strong>Constraints:</strong><br>
-          Power balance constraints.<br>
-          Limiting constraints:<br>
-          &nbsp;&nbsp;&nbsp;e.g. generators minimum and maximum limits.<br>
-          Operational constraints:<br>
-          &nbsp;&nbsp;&nbsp;e.g. state of charge of the battery.<br>
-          Binary constraints:<br>
-          &nbsp;&nbsp;&nbsp;e.g. controlling that the charging and discharging don't happen at the same time.
-        </li>
+      <li>
+        <strong>Decision Variables:</strong><br>
+        Continuous:<br>
+        &nbsp;&nbsp;&nbsp;e.g. generator power, load-shedding amount.<br>
+        Binary:<br>
+        &nbsp;&nbsp;&nbsp;e.g. on/off status of line or battery charging/discharging status.<br>
+        Discrete integers:<br>
+        &nbsp;&nbsp;&nbsp;e.g. number of generators to install.
+      </li>
+      <li>
+        <strong>Constraints:</strong><br>
+        Power balance constraints.<br>
+        Limiting constraints:<br>
+        &nbsp;&nbsp;&nbsp;e.g. generators minimum and maximum limits.<br>
+        Operational constraints:<br>
+        &nbsp;&nbsp;&nbsp;e.g. state of charge of the battery.<br>
+        Binary constraints:<br>
+        &nbsp;&nbsp;&nbsp;e.g. controlling that the charging and discharging don't happen at the same time.
+      </li>
     </ul>
   </div>
 
@@ -134,7 +136,7 @@
       operational and limit constraints.</p>
     <h3>Consider the below system as an example</h3>
     <div class="image-placeholder">
-      <img src="images/test_system.png" alt="Test System" style="max-width: 100%; height: auto;">
+      <img src="images/test_system.png" alt="Test System" style="max-width: 80%; height: auto;">
     </div>
     <p>The above system has 5lines, 4buses, 2DGs, 2Load, 1BESS, 1RES, and an external grid connection.</p>
 
@@ -143,15 +145,59 @@
       assumes that there is a central controller (energy management system EMS) that performs optimization.
     </p>
     <div class="image-placeholder">
-      <img src="images/centralized_image.png" alt="Centralized Approach" style="max-width: 100%; height: auto;">
+      <img src="images/centralized_image.png" alt="Centralized Approach" style="max-width: 80%; height: auto;">
     </div>
 
     <h3>Mathematical Model</h3>
     <p>The objective of microgrid is to minimize the cost while maintaining supply and demand balance. The optimization
       model is as follows:</p>
     <div class="image-placeholder">
-      <img src="images/model_equations.JPG" alt="Centralized Model Equations" style="max-width: 100%; height: auto;">
+      <img src="images/model_equations.JPG" alt="Centralized Model Equations" style="max-width: 80%; height: auto;">
     </div>
+
+    <h3>Results</h3>
+    <div class="image-placeholder">
+      <img src="images/centralized_results.png" alt="Centralized Model Equations" style="max-width: 80%; height: auto;">
+    </div>
+
+
+    <h2>Microgrid CSV Data Table</h2>
+    <table id="csvTable" class="display" style="width:100%"></table>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- PapaParse CSV parser -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+    <script>
+      // Path to your CSV file
+      const csvFilePath = 'code/results.csv'; // adjust path if needed
+
+      // Fetch and parse CSV file using PapaParse
+      fetch(csvFilePath)
+        .then(response => response.text())
+        .then(csvText => {
+          const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+          const data = parsed.data;
+          const columns = parsed.meta.fields.map(field => ({ title: field, data: field }));
+
+          // Initialize DataTable with parsed data
+          $('#csvTable').DataTable({
+            data: data,
+            columns: columns,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50],
+            responsive: true
+          });
+        })
+        .catch(error => {
+          console.error('Error loading CSV:', error);
+          document.body.insertAdjacentHTML('beforeend', '<p style="color:red;">Failed to load CSV file.</p>');
+        });
+    </script>
+
   </div>
 
   <div class="section">
