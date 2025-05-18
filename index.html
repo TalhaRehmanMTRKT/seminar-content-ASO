@@ -163,11 +163,14 @@
       </div>
     </div>
     <h3>Power Flow Heatmap</h3>
-    <div id="heatmapTab" class="tab-content active">
-      <label for="hourSelect"><strong>Select Hour:</strong></label>
-      <select id="hourSelect"></select>
-      <canvas id="powerFlowHeatmap" width="400" height="400"></canvas>
-    </div>
+<h3>Power Flow Heatmap</h3>
+<div id="powerflowHeatmapContainer" style="max-width: 450px; margin: 1rem auto;">
+  <label for="hourSelect" style="display:block; margin-bottom:0.5rem; font-weight:600;">
+    Select Hour:
+  </label>
+  <select id="hourSelect" style="width: 100%; padding: 0.4rem; margin-bottom: 1rem; font-size: 1rem;"></select>
+  <canvas id="powerFlowHeatmap" width="400" height="400" style="border:1px solid #ccc; border-radius:8px; background:#fff;"></canvas>
+</div>
 
   </div>
 

@@ -148,3 +148,18 @@ footer a:hover {
     transform: translateY(0);
   }
 }
+#powerflowHeatmapContainer {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  user-select: none;
+}
+
+#powerFlowHeatmap {
+  width: 100% !important; /* make canvas responsive */
+  height: auto !important;
+  max-height: 400px;
+  display: block;
+  margin: 0 auto;
+}

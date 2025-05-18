@@ -151,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
       type: 'matrix',
       data: { datasets: [dataset] },
       options: {
+        maintainAspectRatio: true,
+        aspectRatio: 1,  // keep square
         responsive: true,
         plugins: {
           tooltip: {
@@ -165,7 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           title: {
             display: true,
-            text: `Power Flow Heatmap (Hour ${heatmapData[hourIndex].Hour})`
+            text: `Power Flow Heatmap (Hour ${heatmapData[hourIndex].Hour})`,
+            font: { size: 16, weight: 'bold' }
           },
           legend: { display: false }
         },
@@ -176,7 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ticks: {
               callback: (v) => busLabels[v],
               max: 3,
-              stepSize: 1
+              stepSize: 1,
+              font: { size: 12 }
             },
             grid: { display: false }
           },
@@ -186,13 +190,15 @@ document.addEventListener("DOMContentLoaded", () => {
             ticks: {
               callback: (v) => busLabels[v],
               max: 3,
-              stepSize: 1
+              stepSize: 1,
+              font: { size: 12 }
             },
             grid: { display: false }
           }
         }
       }
     };
+
 
     if (heatmapChart) heatmapChart.destroy();
     heatmapChart = new Chart(canvas, config);
