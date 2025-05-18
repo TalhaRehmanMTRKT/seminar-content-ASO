@@ -1,52 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Optimal Operation in Power Systems - Talha Rehman</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 2rem; background: #f9f9f9; line-height: 1.6; }
-    h1, h2, h3 { color: #2c3e50; }
-    pre { background: #272822; color: #f8f8f2; padding: 1em; overflow-x: auto; border-radius: 5px; }
-    code { font-family: Consolas, monospace; }
-    .section { margin-bottom: 3rem; }
-    .code-title { background: #444; color: #fff; padding: 0.5em 1em; border-radius: 5px 5px 0 0; }
-    img.model { display: block; margin: 1rem auto; max-width: 90%; border: 1px solid #ccc; border-radius: 8px; padding: 4px; background: white; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #f9f9f9;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #2c3e50;
+    }
+
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 1em;
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .code-title {
+      background: #444;
+      color: #fff;
+      padding: 0.5em 1em;
+      border-radius: 5px 5px 0 0;
+    }
+
+    img.model {
+      display: block;
+      margin: 1rem auto;
+      max-width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 4px;
+      background: white;
+    }
   </style>
 </head>
+
 <body>
   <h1>Optimal Operation in Power Systems</h1>
-  <p><strong>Author:</strong> Talha Rehman (202328010)<br>
-     <strong>Advisor:</strong> Prof. Hak-Man Kim<br>
-     <strong>Course:</strong> Advanced System Operation<br>
-     <strong>Website:</strong> <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
+  <p><strong>Author:</strong> Talha Rehman @Incheon National University<br>
+    <strong>Course:</strong> Advanced System Operation<br>
+    <strong>Website:</strong> <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
   </p>
 
   <div class="section">
     <h2>Introduction</h2>
-    <p>Optimization in power systems involves making decisions on how to use available resources to meet energy demand at the lowest possible cost, while satisfying technical and operational constraints. This includes generation dispatch, storage operation, and grid interaction.</p>
+    <p>
+      Optimization is the decision-making of how we can utilize the limited amount of resources in the best way
+      (optimally!) such that we achieve our desired goal (objective) while also respecting any given conditions
+      (constraints).
+    </p>
+    <p>
+      <em>
+        For example, in a power system, if we have three generators each with its own cost function and a 24-hour demand
+        forecast for the next day, then day-ahead decision-making involves deciding how to operate those generators so
+        that:<br>
+        The total system cost is minimized.<br>
+        Supply and demand remain balanced.<br>
+        Network security and resource constraints are never violated.<br>
+        This way, we run the generators optimally to meet tomorrow’s demand at the lowest possible cost!
+      </em>
+    </p>
   </div>
+
 
   <div class="section">
     <h2>Microgrid Overview</h2>
-    <p>A microgrid consists of distributed energy resources (DERs) like diesel generators (DG), renewable sources (RES), battery energy storage systems (BESS), and electric loads. It can operate connected to or isolated from the main grid.</p>
+    <p>Microgrids are the small scale power grid, that has there own distributed generation resources and demand. It can
+      be connected to the external grid while it can also operate in the islanded mode.</p>
+    <div class="image-placeholder">
+      <img src="images/microgird.png" alt="Microgrid diagram or concept" style="max-width: 100%; height: auto;">
+    </div>
   </div>
 
   <div class="section">
     <h2>Optimization Model</h2>
-    <p>The microgrid optimization problem is formulated as a Mixed Integer Linear Programming (MILP) problem with the following components:</p>
+    <p>The microgrid optimization problem is formulated as a Mixed Integer Linear Programming (MILP) problem with the
+      following components:</p>
     <ul>
-      <li><strong>Objective Function:</strong> Minimize total cost including grid purchase, diesel generation, and grid sales revenue.</li>
-      <li><strong>Decision Variables:</strong> Generator output, grid purchase/sell, battery charge/discharge, and state of charge (SoC).</li>
-      <li><strong>Constraints:</strong> Power balance, generator limits, battery operational limits, binary conditions for mutual exclusivity in charging/discharging, and optionally, power flow constraints.</li>
-    </ul>
+      <<li>
+        <strong>Objective Function:</strong><br>
+        Minimize:<br>
+        &nbsp;&nbsp;&nbsp;e.g. cost, load shedding.<br>
+        Maximize:<br>
+        &nbsp;&nbsp;&nbsp;e.g. profit.
+        </li>
 
-    <h3>Mathematical Formulation</h3>
-    <p>Below is the placeholder for the optimization model (objective function and constraints) in mathematical form. You should replace the image source with your actual image path (e.g., <code>images/model_equations.png</code>).</p>
-    <img src="images/model_equations.png" alt="Mathematical Model - Objective and Constraints" class="model">
-    <p><em>Place this image inside the <code>images/</code> folder in your GitHub repository and make sure the filename is <code>model_equations.png</code>. You can export this from your presentation or LaTeX tool.</em></p>
+        <li>
+          <strong>Decision Variables:</strong><br>
+          Continuous:<br>
+          &nbsp;&nbsp;&nbsp;e.g. generator power, load-shedding amount.<br>
+          Binary:<br>
+          &nbsp;&nbsp;&nbsp;e.g. on/off status of line or battery charging/discharging status.<br>
+          Discrete integers:<br>
+          &nbsp;&nbsp;&nbsp;e.g. number of generators to install.
+        </li>
+        <li>
+          <strong>Constraints:</strong><br>
+          Power balance constraints.<br>
+          Limiting constraints:<br>
+          &nbsp;&nbsp;&nbsp;e.g. generators minimum and maximum limits.<br>
+          Operational constraints:<br>
+          &nbsp;&nbsp;&nbsp;e.g. state of charge of the battery.<br>
+          Binary constraints:<br>
+          &nbsp;&nbsp;&nbsp;e.g. controlling that the charging and discharging don't happen at the same time.
+        </li>
+    </ul>
   </div>
+
+<!-- 
+      <h3>Mathematical Formulation</h3>
+    <img src="images/model_equations.JPG" alt="Mathematical Model - Objective and Constraints" class="model"> -->
 
   <div class="section">
     <h2>Code Implementation</h2>
@@ -99,17 +183,22 @@ for (...) { resultFile &lt;&lt; ... }</code></pre>
 
   <div class="section">
     <h2>Optimal Power Flow (Optional)</h2>
-    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for susceptance matrix and limits the power exchanged between buses.</p>
+    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for
+      susceptance matrix and limits the power exchanged between buses.</p>
   </div>
 
   <div class="section">
     <h2>Conclusion</h2>
-    <p>This project models and solves the optimal operation of a microgrid over 24 hours. It highlights the importance of MILP in energy management, showcasing how economic dispatch, storage operation, and optional power flow constraints are handled in a centralized framework.</p>
+    <p>This project models and solves the optimal operation of a microgrid over 24 hours. It highlights the importance
+      of MILP in energy management, showcasing how economic dispatch, storage operation, and optional power flow
+      constraints are handled in a centralized framework.</p>
   </div>
 
   <footer>
     <hr>
-    <p>Developed by Talha Rehman | <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a></p>
+    <p>Developed by Talha Rehman | <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
+    </p>
   </footer>
 </body>
+
 </html>
