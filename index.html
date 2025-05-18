@@ -117,7 +117,8 @@
 
     <h3>Results</h3>
     <div class="image-placeholder">
-      <img src="images/centralized_results.png" alt="Centralized Model Equations" style="max-width: 80%; height: auto" />
+      <img src="images/centralized_results.png" alt="Centralized Model Equations"
+        style="max-width: 80%; height: auto" />
     </div>
 
     <h3>Microgrid Operation Results Data Table</h3>
@@ -126,9 +127,22 @@
 
 
   <div class="section">
-    <h2>Optimal Power Flow (Optional)</h2>
-    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for
-      susceptance matrix and limits the power exchanged between buses.</p>
+    <h2>Optimal Power Flow</h2>
+    <p>In optimal power flow, we consider network constraints—such as limits of line and bus voltages—and determine both
+      power flows and dispatch schedule. linear power flow model assumes “linear mathematical formulation”, consider
+      only each line susceptance and buses voltage angles.
+    </p>
+    <div class="image-placeholder">
+      <img src="images/opf_figure.png" alt="Optimal Power Flow" style="max-width: 80%; height: auto" />
+    </div>
+    <h3>Changes in Mathematical Mode</h3>
+    <p>The nodal power balance equation is:
+    </p>
+    <div class="image-placeholder">
+      <img src="images/opf_model.png" alt="Optimal Power Flow" style="max-width: 80%; height: auto" />
+    </div>
+    <p></p>While the objective function and other constraints remains the same as in centralized mathematical modelling.
+    </p>
   </div>
 
 
@@ -191,16 +205,16 @@ for (...) { resultFile &lt;&lt; ... }</code></pre>
       constraints are handled in a centralized framework.</p>
   </div>
 
-<footer>
-  <hr />
-  <p>
-    Developed by Talha Rehman |
-    <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/" target="_blank">Project Page</a> |
-    <a href="https://github.com/TalhaRehmanMTRKT" target="_blank">GitHub</a> |
-    <a href="https://www.linkedin.com/in/muhammad-talha-rehman-khan-tareen/" target="_blank">LinkedIn</a> |
-    <a href="https://scholar.google.com/citations?user=j_AybA4AAAAJ&hl=en" target="_blank">Google Scholar</a>
-  </p>
-</footer>
+  <footer>
+    <hr />
+    <p>
+      Developed by Talha Rehman |
+      <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/" target="_blank">Project Page</a> |
+      <a href="https://github.com/TalhaRehmanMTRKT" target="_blank">GitHub</a> |
+      <a href="https://www.linkedin.com/in/muhammad-talha-rehman-khan-tareen/" target="_blank">LinkedIn</a> |
+      <a href="https://scholar.google.com/citations?user=j_AybA4AAAAJ&hl=en" target="_blank">Google Scholar</a>
+    </p>
+  </footer>
 
 
   <!-- jQuery -->
