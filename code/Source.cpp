@@ -405,18 +405,18 @@ main(int, char**)
             resultFile << ",DG" << i + 1 << "_Power(MW)";
         }
         // adde load, renewable generation, and BESS data
-        resultFile << ",Load1(MW),Load2(MW),Renewable_Gen(MW),BESS_Charge(MW),BESS_Discharge(MW),SoC";
+        resultFile << ",Load (MW),Renewable_Gen(MW),BESS_Charge(MW),BESS_Discharge(MW),SoC";
         resultFile << "\n";
 
         // Write data rows
         for (int t = 0; t < T; ++t) {
-            resultFile << t << "," << cplex.getValue(p_buy[t]) << "," << cplex.getValue(p_sell[t]);
+            resultFile << t << "," << cplex.getValue(p_buy[t]) << "," << -1 * cplex.getValue(p_sell[t]);
 
             for (int i = 0; i < numDGs; ++i) {
                 resultFile << "," << cplex.getValue(p_dg[i][t]);
             }
             // add load, renewable generation, and BESS data
-            resultFile << "," << p_load[0][t] << "," << p_load[1][t] << "," << p_res[t] << "," << cplex.getValue(p_bess_chg[t]) << "," << cplex.getValue(p_bess_dch[t]) << "," << cplex.getValue(soc[t]);
+            resultFile << "," << p_load[0][t] + p_load[1][t] << "," << p_res[t] << "," << -1* cplex.getValue(p_bess_chg[t]) << "," <<  cplex.getValue(p_bess_dch[t]) << "," << cplex.getValue(soc[t]);
 
             resultFile << "\n";
         }
