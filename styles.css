@@ -89,32 +89,56 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
-
 .tab-buttons {
   list-style-type: none;
   padding: 0;
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 15px;
+  justify-content: center;
 }
 
 .tab-btn {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  background-color: #f2f2f2;
+  background: linear-gradient(145deg, #a0eec0, #6fd48c);
+  color: #074f2a;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.3), inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-btn:hover {
+  background: linear-gradient(145deg, #92e0b3, #63c47f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 128, 0, 0.4);
 }
 
 .tab-btn.active {
-  background-color: #007bff;
+  background: linear-gradient(145deg, #5bc979, #45a75e);
   color: white;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .tab-content {
   display: none;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .tab-content.active {
   display: block;
+}
+
+/* Optional smooth animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
