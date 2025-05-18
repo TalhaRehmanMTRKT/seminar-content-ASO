@@ -337,7 +337,8 @@ main(int, char**)
                   // Line limits
                   for (int i = 0; i < numBuses; ++i) {
                       for (int j = 0; j < numBuses; ++j) {
-                          -line_capacity <= B[i][j]*(theta[i][t] - theta[j][t]) <= line_capacity;
+                          model.add(B[i][j] * (theta[i][t] - theta[j][t]) <= line_capacity);
+                          model.add(B[i][j] * (theta[i][t] - theta[j][t]) >= -line_capacity);
                       }
                   }
 
