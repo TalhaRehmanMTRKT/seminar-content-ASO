@@ -9,53 +9,189 @@
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background: #f9f9f9;
-      line-height: 1.6;
-    }
+  /* Reset some defaults */
+  * {
+    box-sizing: border-box;
+  }
 
-    h1,
-    h2,
-    h3 {
-      color: #2c3e50;
-    }
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background: #f4f7fa;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
 
-    pre {
-      background: #272822;
-      color: #f8f8f2;
-      padding: 1em;
-      overflow-x: auto;
-      border-radius: 5px;
-    }
+  h1, h2, h3 {
+    color: #1a2b47;
+    font-weight: 700;
+  }
 
-    code {
-      font-family: Consolas, monospace;
-    }
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 0.25em;
+  }
 
-    .section {
-      margin-bottom: 3rem;
-    }
+  h2 {
+    font-size: 2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 0.25em;
+  }
 
-    .code-title {
-      background: #444;
-      color: #fff;
-      padding: 0.5em 1em;
-      border-radius: 5px 5px 0 0;
-    }
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+    color: #3a4d6d;
+  }
 
-    img.model {
-      display: block;
-      margin: 1rem auto;
-      max-width: 90%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 4px;
-      background: white;
-    }
-  </style>
+  p {
+    font-size: 1.05rem;
+    max-width: 800px;
+    margin-bottom: 1.2rem;
+  }
+
+  strong {
+    color: #1a2b47;
+  }
+
+  em {
+    font-style: italic;
+    color: #3a4d6d;
+  }
+
+  ul {
+    max-width: 800px;
+    padding-left: 1.2rem;
+    margin-bottom: 2rem;
+    color: #394a6d;
+  }
+
+  li {
+    margin-bottom: 0.6rem;
+  }
+
+  pre {
+    background: #1e2127;
+    color: #d6d6d6;
+    padding: 1em 1.2em;
+    overflow-x: auto;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 0 8px #22272a;
+    max-width: 900px;
+  }
+
+  code {
+    font-family: Consolas, monospace;
+  }
+
+  .section {
+    background: white;
+    padding: 2rem 2.5rem;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 0.07);
+    max-width: 960px;
+  }
+
+  .image-placeholder {
+    text-align: center;
+    margin: 1.2rem 0 2rem 0;
+  }
+
+  img.model, .image-placeholder img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+
+  img.model:hover, .image-placeholder img:hover {
+    transform: scale(1.02);
+  }
+
+  /* Styling DataTable */
+  table.dataTable {
+    border-collapse: separate !important;
+    border-spacing: 0 12px !important;
+    border: none !important;
+    width: 100% !important;
+    font-size: 0.95rem;
+  }
+
+  table.dataTable thead th {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: 600;
+    padding: 12px 18px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  table.dataTable tbody tr {
+    background: white;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.06);
+    border-radius: 8px;
+  }
+
+  table.dataTable tbody td {
+    padding: 10px 16px;
+    vertical-align: middle;
+    color: #1a2b47;
+  }
+
+  table.dataTable tbody tr:hover {
+    background-color: #d7e2f4;
+  }
+
+  /* Pagination buttons */
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: #2c3e50;
+    color: white !important;
+    border-radius: 5px;
+    margin: 0 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #1a2b47;
+    color: #a8c0ff !important;
+  }
+
+  /* Links */
+  a {
+    color: #3a58b2;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  footer {
+    text-align: center;
+    color: #7a8aa3;
+    margin: 3rem 0 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 3rem auto 2rem auto;
+    max-width: 960px;
+  }
+</style>
+
 </head>
 
 <body>
@@ -161,7 +297,7 @@
     </div>
 
 
-    <h2>Microgrid CSV Data Table</h2>
+    <h3>Microgrid Operation Results Data Table</h3>
     <table id="csvTable" class="display" style="width:100%"></table>
 
     <!-- jQuery -->
