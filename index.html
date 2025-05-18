@@ -124,6 +124,16 @@
     <table id="csvTable" class="display" style="width: 100%"></table>
   </div>
 
+
+  <div class="section">
+    <h2>Optimal Power Flow (Optional)</h2>
+    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for
+      susceptance matrix and limits the power exchanged between buses.</p>
+  </div>
+
+
+
+
   <div class="section">
     <h2>Code Implementation</h2>
     <p>The C++ implementation uses IBM CPLEX for optimization. Below is a detailed explanation of key code segments.</p>
@@ -173,11 +183,6 @@ resultFile &lt;&lt; "Hour,Grid_Buy,Grid_Sell,DG1,DG2,Load,RES,BESS_Charge,BESS_D
 for (...) { resultFile &lt;&lt; ... }</code></pre>
   </div>
 
-  <div class="section">
-    <h2>Optimal Power Flow (Optional)</h2>
-    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for
-      susceptance matrix and limits the power exchanged between buses.</p>
-  </div>
 
   <div class="section">
     <h2>Conclusion</h2>
@@ -186,12 +191,17 @@ for (...) { resultFile &lt;&lt; ... }</code></pre>
       constraints are handled in a centralized framework.</p>
   </div>
 
-  <footer>
-    <hr />
-    <p>
-      Developed by Talha Rehman | <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
-    </p>
-  </footer>
+<footer>
+  <hr />
+  <p>
+    Developed by Talha Rehman |
+    <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/" target="_blank">Project Page</a> |
+    <a href="https://github.com/TalhaRehmanMTRKT" target="_blank">GitHub</a> |
+    <a href="https://www.linkedin.com/in/muhammad-talha-rehman-khan-tareen/" target="_blank">LinkedIn</a> |
+    <a href="https://scholar.google.com/citations?user=j_AybA4AAAAJ&hl=en" target="_blank">Google Scholar</a>
+  </p>
+</footer>
+
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
