@@ -162,6 +162,13 @@
         <table id="powerflowTable" class="display" style="width: 100%"></table>
       </div>
     </div>
+
+    <div id="heatmapTab" class="tab-content">
+      <label for="hourSelect"><strong>Select Hour:</strong></label>
+      <select id="hourSelect"></select>
+      <canvas id="powerFlowHeatmap" width="400" height="400"></canvas>
+    </div>
+
   </div>
 
 
@@ -235,15 +242,22 @@ for (...) { resultFile &lt;&lt; ... }</code></pre>
     </p>
   </footer>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- DataTables JS -->
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <!-- PapaParse CSV parser -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- Your custom JS -->
-  <script src="script.js"></script>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<!-- PapaParse (CSV parser) -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<!-- Chart.js and Matrix Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.2.0/dist/chartjs-chart-matrix.min.js"></script>
+
+<!-- Your custom script (after all libraries) -->
+<script src="script.js"></script>
+
 </body>
 
 </html>
