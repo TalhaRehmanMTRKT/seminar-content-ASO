@@ -1,6 +1,6 @@
 // Load CSV file and initialize DataTable
 $(document).ready(function () {
-  const csvFilePath = "./code/results.csv";
+  const csvFilePath = "code/results.csv";
 
   $.ajax({
     url: csvFilePath,
