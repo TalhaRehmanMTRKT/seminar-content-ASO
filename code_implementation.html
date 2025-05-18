@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Code Implementation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f7f7;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+
+    h2, h3 {
+      color: #2c3e50;
+    }
+
+    pre {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95em;
+    }
+
+    code {
+      white-space: pre-wrap;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h2>Code Implementation</h2>
+    <p>
+      The C++ implementation uses IBM CPLEX for optimization. Below is a detailed breakdown of the main code components.
+    </p>
+
+    <h3>1. System Parameters and Topology</h3>
+    <pre><code>const int T = 24; // Time horizon (hours)
+const int numBuses = 4, numDGs = 2, numLoads = 2, numBESS = 1, numRES = 1;
+const double price_scale = 0.8;
+const bool consider_opf = false;
+const double x = 0.1, r = 0.0;
+const double line_capacity = 500.0;
+
+std::vector&lt;std::pair&lt;int, int&gt;&gt; lines = {
+  {0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}
+};
+
+// Susceptance and B matrix
+std::vector&lt;std::vector&lt;double&gt;&gt; susceptance(numBuses, std::vector&lt;double&gt;(numBuses, 0.0));
+std::vector&lt;std::vector&lt;double&gt;&gt; B(numBuses, std::vector&lt;double&gt;(numBuses, 0.0));
+
+// Fill susceptance matrix
+for (const auto&amp; line : lines) {
+  int i = line.first, j = line.second;
+  double b_ij = -x / (r * r + x * x);
+  susceptance[i][j] = b_ij;
+  susceptance[j][i] = b_ij;
+}
+
+// Fill B matrix (DC power flow)
+for (int i = 0; i &lt; numBuses; ++i) {
+  for (int j = 0; j &lt; numBuses; ++j) {
+    if (i != j) B[i][j] = -susceptance[i][j];
+    else {
+      double sum = 0.0;
+      for (int k = 0; k &lt; numBuses; ++k)
+        if (k != i) sum += susceptance[i][k];
+      B[i][j] = sum;
+    }
+  }
+}</code></pre>
+
+    <h3>2. Input Data and Location Assignment</h3>
+    <pre><code>// Initialize location vectors
+std::vector&lt;int&gt; grid_location(numBuses, 0);
+std::vector&lt;int&gt; battery_location(numBuses, 0);
+std::vector&lt;int&gt; res_location(numBuses, 0);
+std::vector&lt;std::vector&lt;int&gt;&gt; dg_locations(numDGs, std::vector&lt;int&gt;(numBuses, 0));
+std::vector&lt;std::vector&lt;int&gt;&gt; load_locations(numLoads, std::vector&lt;int&gt;(numBuses, 0));
+
+// Set locations
+grid_location[3] = 1;
+battery_location[0] = 1;
+res_location[0] = 1;
+dg_locations[0][1] = 1;
+dg_locations[1][2] = 1;
+load_locations[0][1] = 1;
+load_locations[1][2] = 1;</code></pre>
+
+    <h3>3. Cost and Demand Profiles</h3>
+    <pre><code>std::vector&lt;double&gt; c_buy = {90, 90, ..., 80}; // 24 values
+std::vector&lt;std::vector&lt;double&gt;&gt; p_load = { {...}, {...} }; // 2 loads × 24 values
+std::vector&lt;double&gt; p_res = {16,17,...,150}; // 24 values</code></pre>
+
+    <h3>4. Storage and Generator Parameters</h3>
+    <pre><code>const double p_bess_max = 200.0;
+const double eta = 0.95;
+const double soc_min = 0.10;
+const double soc_max = 0.90;
+
+struct DieselGenerator {
+  double cost_per_mwh;
+  double p_min;
+  double p_max;
+};
+
+std::vector&lt;DieselGenerator&gt; dgs = {
+  {80.0, 50.0, 200.0},
+  {70.0, 50.0, 200.0}
+};</code></pre>
+
+    <h3>5. Decision Variables</h3>
+    <pre><code>NumVar2D p_dg(env, numDGs);
+for (int i = 0; i &lt; numDGs; ++i) {
+  p_dg[i] = IloNumVarArray(env, T, 0, IloInfinity, ILOFLOAT);
+}
+
+IloNumVarArray p_buy(env, T, 0, IloInfinity, ILOFLOAT);
+IloNumVarArray p_sell(env, T, 0, IloInfinity, ILOFLOAT);
+IloNumVarArray p_bess_chg(env, T, 0, IloInfinity, ILOFLOAT);
+IloNumVarArray p_bess_dch(env, T, 0, IloInfinity, ILOFLOAT);
+IloNumVarArray soc(env, T, 0, 1, ILOFLOAT);
+IloNumVarArray omega(env, T, 0, IloInfinity, ILOINT);
+
+NumVar2D theta(env, numBuses);
+for (int i = 0; i &lt; numBuses; ++i) {
+  theta[i] = IloNumVarArray(env, T, -IloInfinity, IloInfinity, ILOFLOAT);
+}</code></pre>
+
+    <h3>6. Objective Function</h3>
+    <pre><code>IloExpr objective(env);
+for (int t = 0; t &lt; T; t++) {
+  objective += c_buy[t] * p_buy[t] - price_scale * c_buy[t] * p_sell[t];
+  for (int i = 0; i &lt; numDGs; ++i) {
+    objective += dgs[i].cost_per_mwh * p_dg[i][t];
+  }
+}
+model.add(IloMinimize(env, objective));</code></pre>
+
+    <h3>7. Constraints</h3>
+    <pre><code>for (int t = 0; t &lt; T; t++) {
+  if (consider_opf) {
+    // DC power flow constraints
+  } else {
+    model.add(p_buy[t] + p_res[t] + p_dg[0][t] + p_dg[1][t] + p_bess_dch[t] ==
+              p_bess_chg[t] + p_load[0][t] + p_load[1][t] + p_sell[t]);
+  }
+
+  // BESS SoC dynamics and limits
+  // Binary charge/discharge switch
+  // DG limits
+}</code></pre>
+
+    <h3>8. Solving</h3>
+    <pre><code>IloCplex cplex(env);
+cplex.extract(model);
+// cplex.setOut(env.getNullStream());
+if (!cplex.solve()) {
+  env.error() &lt;&lt; "Failed" &lt;&lt; endl;
+  throw(-1);
+}
+double obj = cplex.getObjValue();
+std::cout &lt;&lt; "Minimized Objective Function: " &lt;&lt; obj &lt;&lt; std::endl;</code></pre>
+  </div>
+</body>
+</html>
