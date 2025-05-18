@@ -3,107 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Optimal Operation in Power Systems</title>
+  <title>Optimal Operation in Power Systems - Talha Rehman</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 2rem;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #004080;
-    }
-    .section {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #ccc;
-    }
-    code, pre {
-      background-color: #eee;
-      padding: 0.5rem;
-      display: block;
-      overflow-x: auto;
-    }
-    .placeholder-img {
-      width: 100%;
-      height: 200px;
-      background: #ddd url('https://via.placeholder.com/600x200.png?text=Image+Placeholder') center/cover no-repeat;
-      margin: 1rem 0;
-    }
-    .contact-icons a {
-      margin: 0 10px;
-      font-size: 1.5rem;
-      color: #333;
-      text-decoration: none;
-    }
-    .contact-icons a:hover {
-      color: #0077b5;
-    }
+    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 2rem; background: #f9f9f9; line-height: 1.6; }
+    h1, h2, h3 { color: #2c3e50; }
+    pre { background: #272822; color: #f8f8f2; padding: 1em; overflow-x: auto; border-radius: 5px; }
+    code { font-family: Consolas, monospace; }
+    .section { margin-bottom: 3rem; }
+    .code-title { background: #444; color: #fff; padding: 0.5em 1em; border-radius: 5px 5px 0 0; }
+    img.model { display: block; margin: 1rem auto; max-width: 90%; border: 1px solid #ccc; border-radius: 8px; padding: 4px; background: white; }
   </style>
 </head>
 <body>
-  <h1> Optimal Operation in Power Systems</h1>
-  <p><em>Presentation content for the course <strong>Advanced System Operation</strong> at Incheon National University, South Korea.<br>
-  <strong>Professor</strong>: [Professor Name Placeholder]</em></p>
+  <h1>Optimal Operation in Power Systems</h1>
+  <p><strong>Author:</strong> Talha Rehman (202328010)<br>
+     <strong>Advisor:</strong> Prof. Hak-Man Kim<br>
+     <strong>Course:</strong> Advanced System Operation<br>
+     <strong>Website:</strong> <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a>
+  </p>
 
   <div class="section">
-    <h2> Introduction</h2>
-    <p>This project explores the core principles behind optimal operation in modern power systems. We focus on strategies to achieve cost-effective, reliable, and sustainable power generation and distribution.</p>
-  </div>
-
-  <div class="section">
-    <h2> Microgrids</h2>
-    <p>Microgrids are self-contained energy systems that operate independently or with the main grid. They include renewables, storage, and smart loads.</p>
+    <h2>Introduction</h2>
+    <p>Optimization in power systems involves making decisions on how to use available resources to meet energy demand at the lowest possible cost, while satisfying technical and operational constraints. This includes generation dispatch, storage operation, and grid interaction.</p>
   </div>
 
   <div class="section">
-    <h2> Optimal Operations (Economic Dispatch)</h2>
-    <p>Economic dispatch allocates load optimally across generators to minimize cost.</p>
-    <pre>min Σ Cᵢ(Pᵢ)  
-subject to: ΣPᵢ = D, Pᵢmin ≤ Pᵢ ≤ Pᵢmax</pre>
+    <h2>Microgrid Overview</h2>
+    <p>A microgrid consists of distributed energy resources (DERs) like diesel generators (DG), renewable sources (RES), battery energy storage systems (BESS), and electric loads. It can operate connected to or isolated from the main grid.</p>
   </div>
 
   <div class="section">
-    <h2> Centralized Approach</h2>
-    <p>Centralized optimization uses complete system data for global decision making.</p>
-    <pre>min Σ (aᵢPᵢ² + bᵢPᵢ + cᵢ)  
-subject to: ΣPᵢ = D, Pᵢmin ≤ Pᵢ ≤ Pᵢmax</pre>
-    <div class="placeholder-img"></div>
-    <pre><code># Python code placeholder
-def centralized_dispatch(generators, demand):
-    # Optimization logic here
-    pass</code></pre>
+    <h2>Optimization Model</h2>
+    <p>The microgrid optimization problem is formulated as a Mixed Integer Linear Programming (MILP) problem with the following components:</p>
+    <ul>
+      <li><strong>Objective Function:</strong> Minimize total cost including grid purchase, diesel generation, and grid sales revenue.</li>
+      <li><strong>Decision Variables:</strong> Generator output, grid purchase/sell, battery charge/discharge, and state of charge (SoC).</li>
+      <li><strong>Constraints:</strong> Power balance, generator limits, battery operational limits, binary conditions for mutual exclusivity in charging/discharging, and optionally, power flow constraints.</li>
+    </ul>
+
+    <h3>Mathematical Formulation</h3>
+    <p>Below is the placeholder for the optimization model (objective function and constraints) in mathematical form. You should replace the image source with your actual image path (e.g., <code>images/model_equations.png</code>).</p>
+    <img src="images/model_equations.png" alt="Mathematical Model - Objective and Constraints" class="model">
+    <p><em>Place this image inside the <code>images/</code> folder in your GitHub repository and make sure the filename is <code>model_equations.png</code>. You can export this from your presentation or LaTeX tool.</em></p>
   </div>
 
   <div class="section">
-    <h2> Optimal Power Flow (OPF)</h2>
-    <p>OPF determines the optimal operation levels considering power flow constraints.</p>
-    <pre>min f(Pg)  
-subject to: 
-g(x,u) = 0   (Power flow)
-h(x,u) ≤ 0   (Constraints)</pre>
-    <div class="placeholder-img"></div>
-    <pre><code># OPF code placeholder
-def solve_opf(network_data):
-    # Solve OPF
-    pass</code></pre>
+    <h2>Code Implementation</h2>
+    <p>The C++ implementation uses IBM CPLEX for optimization. Below is a detailed explanation of key code segments.</p>
+
+    <h3>1. System Parameters and Topology</h3>
+    <div class="code-title">Microgrid Constants and Network</div>
+    <pre><code>const int T = 24; // Time horizon
+const int numBuses = 4, numDGs = 2, numLoads = 2, numBESS = 1, numRES = 1;
+std::vector&lt;std::pair&lt;int, int&gt;&gt; lines = {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {0, 2}};
+// Susceptance matrix construction for power flow</code></pre>
+
+    <h3>2. Input Data and Location Assignment</h3>
+    <pre><code>dg_locations[0][1] = 1; // DG1 at Bus 2
+battery_location[0] = 1; // Battery at Bus 1
+load_locations[0][1] = 1; // Load1 at Bus 2</code></pre>
+
+    <h3>3. Cost and Demand Profiles</h3>
+    <pre><code>std::vector&lt;double&gt; c_buy = {90, 90, 90, ..., 80};
+std::vector&lt;std::vector&lt;double&gt;&gt; p_load = {...};
+std::vector&lt;double&gt; p_res = {...};</code></pre>
+
+    <h3>4. Decision Variables</h3>
+    <pre><code>IloNumVarArray p_buy(env, T, 0, IloInfinity, ILOFLOAT);
+IloNumVarArray soc(env, T, 0, 1, ILOFLOAT);</code></pre>
+
+    <h3>5. Objective Function</h3>
+    <pre><code>for (int t = 0; t &lt; T; t++) {
+    objective += c_buy[t] * p_buy[t] - price_scale * c_buy[t] * p_sell[t];
+    for (int i = 0; i &lt; numDGs; ++i)
+        objective += dgs[i].cost_per_mwh * p_dg[i][t];
+}</code></pre>
+
+    <h3>6. Power Balance Constraint</h3>
+    <pre><code>// Without OPF:
+model.add(p_buy[t] + p_res[t] + p_dg[0][t] + p_dg[1][t] + p_bess_dch[t] == 
+          p_bess_chg[t] + p_load[0][t] + p_load[1][t] + p_sell[t]);</code></pre>
+
+    <h3>7. Battery Operation Constraints</h3>
+    <pre><code>model.add(soc[t] == soc[t - 1] + (p_bess_chg[t] * eta - p_bess_dch[t] / eta) / p_bess_max);
+model.add(p_bess_chg[t] &lt;= omega[t] * M);
+model.add(p_bess_dch[t] &lt;= (1 - omega[t]) * M);</code></pre>
+
+    <h3>8. Result Export</h3>
+    <p>After solving the model, results are saved to CSV files:</p>
+    <pre><code>std::ofstream resultFile("results.csv");
+resultFile &lt;&lt; "Hour,Grid_Buy,Grid_Sell,DG1,DG2,Load,RES,BESS_Charge,BESS_Discharge,SoC\n";
+for (...) { resultFile &lt;&lt; ... }</code></pre>
   </div>
 
   <div class="section">
-    <h2> Conclusions</h2>
-    <p>This work presents a structured approach to economic dispatch and OPF in centralized and microgrid contexts.</p>
+    <h2>Optimal Power Flow (Optional)</h2>
+    <p>When enabled, OPF includes bus angle variables and power flow limits for lines. The model accounts for susceptance matrix and limits the power exchanged between buses.</p>
   </div>
 
-  <div class="section contact-icons" style="text-align:center">
-    <h2> Connect With Me</h2>
-    <a href="" title="Email"><i class="fas fa-envelope"></i></a>
-    <a href="" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-    <a href="" title="GitHub"><i class="fab fa-github"></i></a>
+  <div class="section">
+    <h2>Conclusion</h2>
+    <p>This project models and solves the optimal operation of a microgrid over 24 hours. It highlights the importance of MILP in energy management, showcasing how economic dispatch, storage operation, and optional power flow constraints are handled in a centralized framework.</p>
   </div>
 
+  <footer>
+    <hr>
+    <p>Developed by Talha Rehman | <a href="https://talharehmanmtrkt.github.io/seminar-content-ASO/">Project Page</a></p>
+  </footer>
 </body>
 </html>
