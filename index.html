@@ -14,8 +14,8 @@
 
 <body>
   <h1>Optimal Operation in Power Systems</h1>
-  <p><strong>Author:</strong> Talha Rehman @Incheon National University<br />
-    <strong>Course:</strong> Advanced System Operation<br />
+  <p><strong>Author:</strong> Talha Rehman @Incheon National University 20-05-2025<br />
+    <strong>Presentation Content For Course:</strong> Advanced System Operation<br />
   </p>
 
   <div class="section">
@@ -25,17 +25,20 @@
       (optimally!) such that we achieve our desired goal (objective) while also respecting any given conditions
       (constraints).
     </p>
-    <p>
-      <em>
+    <p><em>
         For example, in a power system, if we have three generators each with its own cost function and a 24-hour demand
         forecast for the next day, then day-ahead decision-making involves deciding how to operate those generators so
-        that:<br />
-        The total system cost is minimized.<br />
-        Supply and demand remain balanced.<br />
-        Network security and resource constraints are never violated.<br />
+        that:
+      </em></p>
+    <ul>
+      <li><em>The total system cost is minimized.</em></li>
+      <li><em>Supply and demand remain balanced.</em></li>
+      <li><em>Network security and resource constraints are never violated.</em></li>
+    </ul>
+    <p><em>
         This way, we run the generators optimally to meet tomorrow’s demand at the lowest possible cost!
-      </em>
-    </p>
+      </em></p>
+
   </div>
 
   <div class="section">
@@ -91,7 +94,7 @@
       systems, and external grid exchanges so that the total operational cost of the system is minimized, subject to all
       operational and limit constraints.
     </p>
-    <h3>Consider the below system as an example</h3>
+    <h3>Consider The Below System As An Example</h3>
     <div class="image-placeholder">
       <img src="images/test_system.png" alt="Test System" style="max-width: 80%; height: auto" />
     </div>
@@ -135,7 +138,7 @@
     <div class="image-placeholder">
       <img src="images/opf_figure.png" alt="Optimal Power Flow" style="max-width: 80%; height: auto" />
     </div>
-    <h3>Changes in Mathematical Mode</h3>
+    <h3>Changes in Mathematical Model</h3>
     <p>The nodal power balance equation is:
     </p>
     <div class="image-placeholder">
@@ -143,6 +146,22 @@
     </div>
     <p></p>While the objective function and other constraints remains the same as in centralized mathematical modelling.
     </p>
+
+    <h3>Optimal Power Flow Results</h3>
+    <div>
+      <ul class="tab-buttons">
+        <li><button class="tab-btn active" data-tab="thetaTab">Theta Results</button></li>
+        <li><button class="tab-btn" data-tab="powerflowTab">Power Flow Results</button></li>
+      </ul>
+
+      <div id="thetaTab" class="tab-content active">
+        <table id="thetaTable" class="display" style="width: 100%"></table>
+      </div>
+
+      <div id="powerflowTab" class="tab-content">
+        <table id="powerflowTable" class="display" style="width: 100%"></table>
+      </div>
+    </div>
   </div>
 
 
