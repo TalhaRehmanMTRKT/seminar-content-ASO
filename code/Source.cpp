@@ -38,10 +38,10 @@ main(int, char**)
 
     const double price_scale = 0.8; // Price scaling factor for selling power
 
-    const bool consider_opf = false; // Consider optimal power flow (OPF) or not
+    const bool consider_opf = true; // Consider optimal power flow (OPF) or not
 
-    const int theta_min = -360;   // Minimum angle (degrees)
-    const int theta_max = 360;    // Maximum angle (degrees)
+    //const int theta_min = -360;   // Minimum angle (degrees)
+    //const int theta_max = 360;    // Maximum angle (degrees)
 
     // --------------------------------------------
     // B) Line Parameters and Network Topology
@@ -176,7 +176,7 @@ main(int, char**)
 
     // Bus parameters
     std::cout << " Bus Parameters:\n";
-    std::cout << "  Theta Limits      : [" << theta_min << ", " << theta_max << "]\n";
+    //std::cout << "  Theta Limits      : [" << theta_min << ", " << theta_max << "]\n";
 
     //  Line and Network Topology
     std::cout << " Line Parameters:\n";
@@ -343,10 +343,10 @@ main(int, char**)
                   }
 
                   // Theta limits
-                  for (int i = 0; i < numBuses; ++i) {
-                  	model.add(theta[i][t] >= theta_min);
-                  	model.add(theta[i][t] <= theta_max);
-                  }
+                //   for (int i = 0; i < numBuses; ++i) {
+                //   	model.add(theta[i][t] >= theta_min);
+                //   	model.add(theta[i][t] <= theta_max);
+                //   }
 		}
         else {
             //// Energy balance constraint without DC power flow
